@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/c_button.dart';
+import '../widgets/bottom_elements.dart';
 import '../widgets/input_box.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
                 width: 320,
@@ -47,48 +47,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: InputBox(),
               ),
               const SizedBox(
-                height: 16,
-              ),
-              const SubmitButton(
-                text: "Daxil ol",
-              ),
-              const SizedBox(
                 height: 200,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Colors.red,
-                      size: 22,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      "Layihə haqqında",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    SizedBox(
-                      width: 35,
-                    ),
-                    Icon(
-                      Icons.help_outline,
-                      color: Colors.red,
-                      size: 22,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text(
-                      "İştirak qaydaları",
-                      style: TextStyle(fontSize: 16),
-                    )
-                  ],
-                ),
-              ),
+              BottomElements(),
             ],
           ),
         ),
