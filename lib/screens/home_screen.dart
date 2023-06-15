@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -22,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> requestMicrophonePermission() async {
     PermissionStatus status = await Permission.microphone.request();
     if (status != PermissionStatus.granted) {
-      // ignore: use_build_context_synchronously
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -63,7 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
               const Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 35.0),
+                    padding: EdgeInsets.only(
+                      top: 15.0,
+                      left: 15,
+                      right: 15,
+                    ),
                     child: Text(
                       "Telefon nömrəsini daxil edin",
                       style: TextStyle(fontSize: 16),
@@ -74,14 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 16,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0.0),
-                child: InputBox(),
-              ),
+              const InputBox(),
               const SizedBox(
                 height: 200,
               ),
-              BottomElements(),
+              const BottomElements(),
             ],
           ),
         ),
