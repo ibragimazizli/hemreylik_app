@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hermeyliyin_sesi/screens/home_screen.dart';
+import 'package:hermeyliyin_sesi/screens/info_screen.dart';
 import 'package:hermeyliyin_sesi/widgets/bottom_elements.dart';
 import 'dart:async';
 
@@ -120,7 +121,7 @@ class _OTPScreenState extends State<OTPScreen> {
               SubmitButton(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const HomeScreen()));
+                      MaterialPageRoute(builder: (_) => const InfoScreen()));
                 },
                 text: "Kodu təsdiqlə",
               ),

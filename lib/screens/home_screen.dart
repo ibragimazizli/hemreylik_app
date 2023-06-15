@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../widgets/bottom_elements.dart';
 import '../widgets/input_box.dart';
@@ -11,6 +12,37 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    requestMicrophonePermission();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  Future<void> requestMicrophonePermission() async {
+    PermissionStatus status = await Permission.microphone.request();
+    if (status != PermissionStatus.granted) {
+      // ignore: use_build_context_synchronously
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Microphone Permission'),
+          content: const Text(
+              'Please grant microphone permission to use the voice recorder.'),
+          actions: <Widget>[
+            ElevatedButton(
+                child: const Text('OK'),
+                onPressed: () async {
+                  await Permission.microphone.request();
+                  await Permission.storage.request();
+                  Navigator.of(context).pop();
+                }),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
