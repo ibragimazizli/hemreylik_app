@@ -24,7 +24,7 @@ class UsageInfoWidget extends StatelessWidget {
         Center(
           child: SizedBox(
             width: 280,
-            height: 60,
+            height: 65,
             child: Center(
               child: Text(
                 text,

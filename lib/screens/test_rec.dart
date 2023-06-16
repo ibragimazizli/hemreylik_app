@@ -5,6 +5,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'listen_voice.dart';
+
 class TestRecordPage extends StatefulWidget {
   const TestRecordPage({super.key});
 
@@ -14,6 +16,7 @@ class TestRecordPage extends StatefulWidget {
 
 class _TestRecordPageState extends State<TestRecordPage> {
   late final RecorderController recorderController;
+  PlayerController controller = PlayerController(); // Initialise
 
   String? path;
   String? musicFile;
@@ -86,7 +89,9 @@ class _TestRecordPageState extends State<TestRecordPage> {
             ),
           ],
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.black,
@@ -100,7 +105,7 @@ class _TestRecordPageState extends State<TestRecordPage> {
               children: [
                 SizedBox(
                   width: 320,
-                  height: 320,
+                  height: 300,
                   child: Image.asset(
                     'assets/images/record.png',
                     fit: BoxFit.cover,
@@ -129,7 +134,6 @@ class _TestRecordPageState extends State<TestRecordPage> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  height: 60,
                   child: Center(
                     child: Text(
                       recorderController.elapsedDuration.inSeconds.toString(),
@@ -139,34 +143,64 @@ class _TestRecordPageState extends State<TestRecordPage> {
                     ),
                   ),
                 ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 200),
-                  child: isRecording
-                      ? AudioWaveforms(
-                          enableGesture: true,
-                          size: Size(MediaQuery.of(context).size.width, 60),
-                          recorderController: recorderController,
-                          waveStyle: const WaveStyle(
-                            showDurationLabel: true,
-                            durationTextPadding: 20,
-                            durationStyle: TextStyle(color: Colors.black),
-                            durationLinesColor: Colors.black,
-                            waveColor: Colors.red,
-                            extendWaveform: true,
-                            showMiddleLine: false,
-                          ),
-                          padding: const EdgeInsets.only(left: 18),
-                          margin: const EdgeInsets.symmetric(horizontal: 15),
-                        )
-                      : SizedBox(
-                          width: 360,
-                          height: 139,
-                          child: Image.asset(
-                            'assets/images/no sound.png',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                SizedBox(
+                  height: 15,
                 ),
+                recorderController.recorderState == RecorderState.stopped
+                    ? Column(
+                        children: [
+                          AudioFileWaveforms(
+                            size:
+                                Size(MediaQuery.of(context).size.width, 100.0),
+                            playerController: controller,
+                            enableSeekGesture: false,
+                            waveformType: WaveformType.long,
+                            waveformData: [],
+                            playerWaveStyle: const PlayerWaveStyle(
+                              showTop: true,
+                              showBottom: true,
+                              seekLineThickness: 3,
+                              showSeekLine: true,
+                              seekLineColor: Colors.red,
+                              fixedWaveColor: Colors.redAccent,
+                              liveWaveColor: Colors.red,
+                              spacing: 8,
+                            ),
+                          ),
+                        ],
+                      )
+                    : AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: isRecording
+                            ? AudioWaveforms(
+                                enableGesture: true,
+                                size:
+                                    Size(MediaQuery.of(context).size.width, 60),
+                                recorderController: recorderController,
+                                waveStyle: const WaveStyle(
+                                  showDurationLabel: true,
+                                  durationTextPadding: 20,
+                                  durationStyle: TextStyle(color: Colors.black),
+                                  durationLinesColor: Colors.black,
+                                  waveColor: Colors.red,
+                                  extendWaveform: true,
+                                  showMiddleLine: false,
+                                ),
+                                padding: const EdgeInsets.only(left: 18),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                              )
+                            : SizedBox(
+                                width: 360,
+                                height: 139,
+                                child: Image.asset(
+                                  'assets/images/no sound.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                      ),
+
+                // recording
                 !isRecording
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -177,7 +211,7 @@ class _TestRecordPageState extends State<TestRecordPage> {
                           ),
                           isRecording
                               ? IconButton(
-                                  onPressed: _refreshWave,
+                                  onPressed: _stopRec,
                                   icon: const Icon(
                                     Icons.refresh,
                                     color: Colors.black,
@@ -194,13 +228,25 @@ class _TestRecordPageState extends State<TestRecordPage> {
                           children: [
                             GestureDetector(
                               onTap: _startOrStopRecording,
-                              child: Image.asset("assets/icons/micro.png"),
+                              child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100))),
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.send,
+                                      color: Colors.white,
+                                    ),
+                                  )),
                             ),
                             isRecording
                                 ? Padding(
                                     padding: const EdgeInsets.only(left: 18.0),
                                     child: GestureDetector(
-                                      onTap: _refreshWave,
+                                      onTap: _stopRec,
                                       child: Image.asset(
                                           "assets/icons/cancel.png"),
                                     ),
@@ -210,6 +256,8 @@ class _TestRecordPageState extends State<TestRecordPage> {
                           ],
                         ),
                       ),
+
+                // bottom container
                 const SizedBox(
                   height: 40,
                 ),
@@ -253,7 +301,7 @@ class _TestRecordPageState extends State<TestRecordPage> {
         ));
   }
 
-  void _startOrStopRecording() async {
+  _startOrStopRecording() async {
     try {
       if (isRecording) {
         recorderController.reset();
@@ -264,6 +312,14 @@ class _TestRecordPageState extends State<TestRecordPage> {
           isRecordingCompleted = true;
           debugPrint(path);
           debugPrint("Recorded file size: ${File(path).lengthSync()}");
+          _extractWave(path);
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => ListenVoice(
+                        path: path,
+                      )));
         }
       } else {
         await recorderController.record(path: path!);
@@ -277,7 +333,38 @@ class _TestRecordPageState extends State<TestRecordPage> {
     }
   }
 
+  void _stopRec() async {
+    if (isRecording) {
+      recorderController.stop();
+    }
+  }
+
+  void _pauseRec() async {
+    if (isRecording) {
+      recorderController.pause();
+    }
+  }
+
   void _refreshWave() {
     if (isRecording) recorderController.refresh();
+  }
+
+  void _extractWave(path) async {
+    await controller.preparePlayer(
+      path: path,
+      shouldExtractWaveform: true,
+      noOfSamples: 100,
+      volume: 1.0,
+    );
+  }
+
+  void _listenAudio() async {
+    !controller.playerState.isPlaying
+        ? await controller.startPlayer(finishMode: FinishMode.stop)
+        : controller.pausePlayer(); // Start audio player
+  }
+
+  void _pausePlater() async {
+    await controller.pausePlayer();
   }
 }

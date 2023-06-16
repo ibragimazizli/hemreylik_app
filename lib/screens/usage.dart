@@ -34,7 +34,9 @@ class UsageScreen extends StatelessWidget {
           ),
         ],
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
@@ -58,7 +60,7 @@ class UsageScreen extends StatelessWidget {
                 width: double.infinity,
                 child: Column(children: [
                   SizedBox(
-                    height: 16,
+                    height: 15,
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -69,7 +71,7 @@ class UsageScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 16,
+                    height: 15,
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -80,7 +82,7 @@ class UsageScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 16,
+                    height: 15,
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -91,7 +93,7 @@ class UsageScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: 15,
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -108,7 +110,6 @@ class UsageScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 15.0,
                   left: 15,
                   right: 15,
                 ),
@@ -158,6 +159,9 @@ class UsageScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 15,
               ),
             ],
           ),

@@ -6,7 +6,7 @@ class BottomElements extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 30.0),
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
       child: Row(
         children: [
           Icon(

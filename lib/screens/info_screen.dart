@@ -37,7 +37,9 @@ class InfoScreen extends StatelessWidget {
           ),
         ],
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.black,
@@ -99,12 +101,18 @@ class InfoScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 15.0,
                   left: 15,
                   right: 15,
                 ),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const UsageScreen(),
+                      ),
+                    );
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       color: const Color.fromRGBO(249, 57, 57, 1),
@@ -146,6 +154,9 @@ class InfoScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 16,
               ),
             ],
           ),
