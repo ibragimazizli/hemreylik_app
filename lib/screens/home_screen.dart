@@ -17,7 +17,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     requestMicrophonePermission();
-    // TODO: implement initState
     super.initState();
   }
 

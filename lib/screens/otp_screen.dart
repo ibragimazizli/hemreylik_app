@@ -8,6 +8,7 @@ import 'dart:async';
 import 'package:hermeyliyin_sesi/widgets/c_button.dart';
 
 import '../widgets/otp_boxes.dart';
+import 'hesab_yarat.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});
@@ -120,7 +121,7 @@ class _OTPScreenState extends State<OTPScreen> {
               SubmitButton(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const InfoScreen()));
+                      MaterialPageRoute(builder: (_) => const HesabYarat()));
                 },
                 text: "Kodu təsdiqlə",
               ),

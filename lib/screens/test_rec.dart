@@ -1,7 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -24,10 +24,13 @@ class _TestRecordPageState extends State<TestRecordPage> {
   bool isRecordingCompleted = false;
   bool isLoading = true;
   late Directory appDirectory;
-
+  String? duration;
   @override
   void initState() {
     super.initState();
+    Timer.periodic(const Duration(seconds: 1), (_) {
+      getDuration();
+    });
     _getDir();
     _initialiseControllers();
   }
@@ -47,19 +50,10 @@ class _TestRecordPageState extends State<TestRecordPage> {
       ..sampleRate = 44100;
   }
 
-  void _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      musicFile = result.files.single.path;
-      setState(() {});
-    } else {
-      debugPrint("File not picked");
-    }
-  }
-
   @override
   void dispose() {
     recorderController.dispose();
+
     super.dispose();
   }
 
@@ -126,26 +120,28 @@ class _TestRecordPageState extends State<TestRecordPage> {
                       child: Text(
                         "    Azərbaycan himnini sən də oxu,\nhəmrəyliyin səsini bir yerdə yaradaq!",
                         style: TextStyle(
-                          fontSize: 16,
-                        ),
+                            fontSize: 20, fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 25,
                 ),
                 SizedBox(
                   width: double.infinity,
                   child: Center(
                     child: Text(
-                      recorderController.elapsedDuration.inSeconds.toString(),
+                      duration ?? "00:00:00",
+                      // recorderController.elapsedDuration.toHHMMSS(),
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+
                 recorderController.recorderState == RecorderState.stopped
                     ? Column(
                         children: [
@@ -155,7 +151,7 @@ class _TestRecordPageState extends State<TestRecordPage> {
                             playerController: controller,
                             enableSeekGesture: false,
                             waveformType: WaveformType.long,
-                            waveformData: [],
+                            waveformData: const [],
                             playerWaveStyle: const PlayerWaveStyle(
                               showTop: true,
                               showBottom: true,
@@ -171,61 +167,85 @@ class _TestRecordPageState extends State<TestRecordPage> {
                       )
                     : AnimatedSwitcher(
                         duration: const Duration(milliseconds: 200),
-                        child: isRecording
-                            ? AudioWaveforms(
-                                enableGesture: true,
-                                size:
-                                    Size(MediaQuery.of(context).size.width, 60),
-                                recorderController: recorderController,
-                                waveStyle: const WaveStyle(
-                                  showDurationLabel: true,
-                                  durationTextPadding: 20,
-                                  durationStyle: TextStyle(color: Colors.black),
-                                  durationLinesColor: Colors.black,
-                                  waveColor: Colors.red,
-                                  extendWaveform: true,
-                                  showMiddleLine: false,
-                                ),
-                                padding: const EdgeInsets.only(left: 18),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 15),
-                              )
-                            : SizedBox(
-                                width: 360,
-                                height: 139,
-                                child: Image.asset(
-                                  'assets/images/no sound.png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                      ),
+                        child:
+                            //  isRecording ?
+                            AudioWaveforms(
+                          enableGesture: true,
+                          size: Size(MediaQuery.of(context).size.width, 60),
+                          recorderController: recorderController,
+                          waveStyle: const WaveStyle(
+                            showDurationLabel: true,
+                            durationTextPadding: 20,
+                            durationStyle: TextStyle(color: Colors.black),
+                            durationLinesColor: Colors.black,
+                            waveColor: Colors.red,
+                            extendWaveform: true,
+                            showMiddleLine: false,
+                          ),
+                          padding: const EdgeInsets.only(left: 18),
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                        )
+                        // : SizedBox(
+                        //     width: 360,
+                        //     height: 139,
+                        //     child: Image.asset(
+                        //       'assets/images/no sound.png',
+                        //       fit: BoxFit.cover,
+                        //     ),
+                        //   ),
+                        ),
 
                 // recording
                 !isRecording
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            onTap: _startOrStopRecording,
-                            child: Image.asset("assets/icons/micro.png"),
-                          ),
-                          isRecording
-                              ? IconButton(
-                                  onPressed: _stopRec,
-                                  icon: const Icon(
-                                    Icons.refresh,
-                                    color: Colors.black,
-                                  ),
-                                )
-                              : const SizedBox(),
-                          const SizedBox(width: 16),
-                        ],
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.only(top: 80.0, left: 48),
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 20.0, left: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            GestureDetector(
+                              onTap: _startOrStopRecording,
+                              child: Image.asset("assets/icons/micro.png"),
+                            ),
+                            isRecording
+                                ? IconButton(
+                                    onPressed: _stopRec,
+                                    icon: const Icon(
+                                      Icons.refresh,
+                                      color: Colors.red,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                            const SizedBox(width: 16),
+                          ],
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                          top: 70.0,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 18.0),
+                              child: GestureDetector(
+                                  onTap: _pauseRec,
+                                  child:
+                                      recorderController.recorderState.isPaused
+                                          ? const Icon(
+                                              Icons.play_circle_outline_sharp,
+                                              color: Colors.red,
+                                              size: 45,
+                                            )
+                                          : const Icon(
+                                              Icons.pause_circle_outline,
+                                              color: Colors.red,
+                                              size: 45,
+                                            )),
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
                             GestureDetector(
                               onTap: _startOrStopRecording,
                               child: Container(
@@ -242,16 +262,17 @@ class _TestRecordPageState extends State<TestRecordPage> {
                                     ),
                                   )),
                             ),
-                            isRecording
-                                ? Padding(
-                                    padding: const EdgeInsets.only(left: 18.0),
-                                    child: GestureDetector(
-                                      onTap: _stopRec,
-                                      child: Image.asset(
-                                          "assets/icons/cancel.png"),
-                                    ),
-                                  )
-                                : const SizedBox(),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15.0),
+                              child: GestureDetector(
+                                onTap: _stopRec,
+                                child: const Icon(
+                                  Icons.cancel_outlined,
+                                  color: Colors.red,
+                                  size: 45,
+                                ),
+                              ),
+                            ),
                             const SizedBox(width: 16),
                           ],
                         ),
@@ -259,7 +280,7 @@ class _TestRecordPageState extends State<TestRecordPage> {
 
                 // bottom container
                 const SizedBox(
-                  height: 40,
+                  height: 30,
                 ),
                 isRecording
                     ? Center(
@@ -318,6 +339,7 @@ class _TestRecordPageState extends State<TestRecordPage> {
               context,
               MaterialPageRoute(
                   builder: (_) => ListenVoice(
+                        time: duration.toString(),
                         path: path,
                       )));
         }
@@ -336,17 +358,20 @@ class _TestRecordPageState extends State<TestRecordPage> {
   void _stopRec() async {
     if (isRecording) {
       recorderController.stop();
+      setState(() {
+        isRecording = !isRecording;
+      });
     }
   }
 
   void _pauseRec() async {
-    if (isRecording) {
+    if (!recorderController.recorderState.isPaused) {
       recorderController.pause();
+      debugPrint("sest");
+    } else {
+      recorderController.record();
+      debugPrint("Test");
     }
-  }
-
-  void _refreshWave() {
-    if (isRecording) recorderController.refresh();
   }
 
   void _extractWave(path) async {
@@ -358,13 +383,9 @@ class _TestRecordPageState extends State<TestRecordPage> {
     );
   }
 
-  void _listenAudio() async {
-    !controller.playerState.isPlaying
-        ? await controller.startPlayer(finishMode: FinishMode.stop)
-        : controller.pausePlayer(); // Start audio player
-  }
-
-  void _pausePlater() async {
-    await controller.pausePlayer();
+  getDuration() {
+    setState(() {
+      duration = recorderController.elapsedDuration.toHHMMSS();
+    });
   }
 }

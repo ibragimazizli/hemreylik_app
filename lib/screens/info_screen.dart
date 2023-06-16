@@ -55,7 +55,7 @@ class InfoScreen extends StatelessWidget {
                 width: 320,
                 height: 320,
                 child: Image.asset(
-                  'assets/images/info.png',
+                  'assets/images/about.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -155,7 +155,7 @@ class InfoScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
             ],

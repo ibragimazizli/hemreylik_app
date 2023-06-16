@@ -1,10 +1,14 @@
+// ignore_for_file: prefer_const_constructors_in_immutables
+
 import 'package:audio_waveforms/audio_waveforms.dart';
 
 import 'package:flutter/material.dart';
+import 'package:hermeyliyin_sesi/screens/project_end_page.dart';
 
 class ListenVoice extends StatefulWidget {
-  const ListenVoice({super.key, required this.path});
+  ListenVoice({super.key, required this.path, required this.time});
   final String path;
+  final String? time;
   @override
   State<ListenVoice> createState() => _ListenVoiceState();
 }
@@ -22,7 +26,6 @@ class _ListenVoiceState extends State<ListenVoice> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _extractWave(widget.path);
     // controller.
     _stopped();
@@ -31,7 +34,6 @@ class _ListenVoiceState extends State<ListenVoice> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     controller.dispose();
     super.dispose();
   }
@@ -79,7 +81,7 @@ class _ListenVoiceState extends State<ListenVoice> {
               children: [
                 SizedBox(
                   width: 320,
-                  height: 300,
+                  height: 250,
                   child: Image.asset(
                     'assets/images/Voice.png',
                     fit: BoxFit.cover,
@@ -90,7 +92,7 @@ class _ListenVoiceState extends State<ListenVoice> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(
-                    top: 15.0,
+                    // top: 15.0,
                     left: 15,
                     right: 15,
                   ),
@@ -98,22 +100,36 @@ class _ListenVoiceState extends State<ListenVoice> {
                     width: double.infinity,
                     child: Center(
                       child: Text(
-                        "    Azərbaycan himnini sən də oxu,\nhəmrəyliyin səsini bir yerdə yaradaq!",
+                        "Səsini dinlə",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   width: double.infinity,
-                  child: Center(
-                    child: Text(
-                      "te",
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "00:00",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          widget.time!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -124,7 +140,7 @@ class _ListenVoiceState extends State<ListenVoice> {
                       playerController: controller,
                       enableSeekGesture: true,
                       waveformType: WaveformType.long,
-                      waveformData: [],
+                      waveformData: const [],
                       playerWaveStyle: const PlayerWaveStyle(
                         showTop: true,
                         showBottom: true,
@@ -135,8 +151,12 @@ class _ListenVoiceState extends State<ListenVoice> {
                         spacing: 8,
                       ),
                     ),
+                    // SizedBox(
+                    //   width: double.infinity,
+                    //   child: Image.asset("assets/images/Group 27.png"),
+                    // ),
                     const SizedBox(
-                      height: 15,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -186,6 +206,122 @@ class _ListenVoiceState extends State<ListenVoice> {
                     )
                   ],
                 ),
+                const SizedBox(
+                  height: 25,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15,
+                    right: 15,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ProjectEndPage(),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(249, 57, 57, 1),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromRGBO(51, 51, 51, 0.1),
+                            spreadRadius: 0,
+                            blurRadius: 4,
+                            offset: Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      width: double.infinity,
+                      height: 60,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Center(
+                              child: Text(
+                                "Səsini bizə göndər",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: Image.asset("assets/icons/send.png"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15,
+                    right: 15,
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 0, 0, 0),
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromRGBO(51, 51, 51, 0.1),
+                            spreadRadius: 0,
+                            blurRadius: 4,
+                            offset: Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      width: double.infinity,
+                      height: 60,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const Center(
+                              child: Text(
+                                "Səsini yenidən yaz",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: Image.asset("assets/icons/mic.png"),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
               ],
             ),
           ),
@@ -194,14 +330,15 @@ class _ListenVoiceState extends State<ListenVoice> {
 
   void _listenAudio() async {
     if (!controller.playerState.isPlaying) {
-      await controller.startPlayer(finishMode: FinishMode.stop);
+      await controller.startPlayer(finishMode: FinishMode.loop);
       setState(() {
         isListening = true;
       });
+      debugPrint("Listening");
     } else {
       controller.pausePlayer();
       controller.setRefresh(true);
-
+      debugPrint("stopped");
       setState(() {
         isListening = false;
       });
@@ -212,15 +349,18 @@ class _ListenVoiceState extends State<ListenVoice> {
     controller.onCompletion.listen((event) {
       debugPrint("player stopped");
 
-      controller.stopPlayer();
+      controller.startPlayer(finishMode: FinishMode.stop);
+      setState(() {
+        isListening = false;
+      });
     });
   }
 
   void _seekBackward() async {
-    await controller.seekTo(-5000);
+    await controller.seekTo(5000);
   }
 
   void _seekForward() async {
-    await controller.seekTo(5000);
+    await controller.seekTo(-5000);
   }
 }
