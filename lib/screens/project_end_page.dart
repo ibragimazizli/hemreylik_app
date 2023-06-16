@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hermeyliyin_sesi/screens/home_screen.dart';
+import 'package:hemreyliyin_sesi/screens/first_screen.dart';
 
 class ProjectEndPage extends StatefulWidget {
   const ProjectEndPage({super.key});
@@ -36,7 +36,7 @@ class _ProjectEndPageState extends State<ProjectEndPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const HomeScreen(),
+                      builder: (_) => const InitialScreen(),
                     ),
                   );
                 },

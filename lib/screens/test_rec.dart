@@ -7,14 +7,16 @@ import 'package:path_provider/path_provider.dart';
 
 import 'listen_voice.dart';
 
-class TestRecordPage extends StatefulWidget {
-  const TestRecordPage({super.key});
+class RecordPage extends StatefulWidget {
+  final Function(int) onTabChanged;
+
+  const RecordPage({super.key, required this.onTabChanged});
 
   @override
-  State<TestRecordPage> createState() => _TestRecordPageState();
+  State<RecordPage> createState() => _RecordPageState();
 }
 
-class _TestRecordPageState extends State<TestRecordPage> {
+class _RecordPageState extends State<RecordPage> {
   late final RecorderController recorderController;
   PlayerController controller = PlayerController(); // Initialise
 
@@ -73,33 +75,16 @@ class _TestRecordPageState extends State<TestRecordPage> {
           ),
           elevation: 0,
           backgroundColor: Colors.white,
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.black,
-              ),
-            ),
-          ],
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            ),
-          ),
         ),
         body: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
                   width: 320,
-                  height: 300,
+                  height: 260,
                   child: Image.asset(
                     'assets/images/record.png',
                     fit: BoxFit.cover,
@@ -160,7 +145,6 @@ class _TestRecordPageState extends State<TestRecordPage> {
                               seekLineColor: Colors.red,
                               fixedWaveColor: Colors.redAccent,
                               liveWaveColor: Colors.red,
-                              spacing: 8,
                             ),
                           ),
                         ],
@@ -215,7 +199,7 @@ class _TestRecordPageState extends State<TestRecordPage> {
                                     ),
                                   )
                                 : const SizedBox(),
-                            const SizedBox(width: 16),
+                            const SizedBox(width: 10),
                           ],
                         ),
                       )
@@ -280,7 +264,7 @@ class _TestRecordPageState extends State<TestRecordPage> {
 
                 // bottom container
                 const SizedBox(
-                  height: 30,
+                  height: 15,
                 ),
                 isRecording
                     ? Center(

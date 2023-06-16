@@ -1,14 +1,13 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:hermeyliyin_sesi/screens/info_screen.dart';
-import 'package:hermeyliyin_sesi/widgets/bottom_elements.dart';
+import 'package:hemreyliyin_sesi/widgets/bottom_elements.dart';
 import 'dart:async';
 
-import 'package:hermeyliyin_sesi/widgets/c_button.dart';
+import 'package:hemreyliyin_sesi/widgets/c_button.dart';
 
 import '../widgets/otp_boxes.dart';
-import 'hesab_yarat.dart';
+import 'account_create.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});
@@ -121,7 +120,7 @@ class _OTPScreenState extends State<OTPScreen> {
               SubmitButton(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const HesabYarat()));
+                      MaterialPageRoute(builder: (_) => const AccountCreate()));
                 },
                 text: "Kodu təsdiqlə",
               ),

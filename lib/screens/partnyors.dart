@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 
-class Terefdaslarimiz extends StatefulWidget {
-  const Terefdaslarimiz({super.key});
+class Partnyors extends StatefulWidget {
+  const Partnyors({super.key});
 
   @override
-  State<Terefdaslarimiz> createState() => _TerefdaslarimizState();
+  State<Partnyors> createState() => _PartnyorsState();
 }
 
-class _TerefdaslarimizState extends State<Terefdaslarimiz> {
+class _PartnyorsState extends State<Partnyors> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text("Tərəşdaşlarımız",style: TextStyle(color: Colors.black),)),
+        title: const Center(
+            child: Text(
+          "Tərəşdaşlarımız",
+          style: TextStyle(color: Colors.black),
+        )),
         backgroundColor: Colors.white,
         elevation: 0.0,
-        actions: const [
-          Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.black,
-          ),
-        ],
       ),
       body: Center(
         child: Column(
@@ -28,12 +26,14 @@ class _TerefdaslarimizState extends State<Terefdaslarimiz> {
             SizedBox(
               width: 320,
               height: 320,
-              child: Image.asset("assets/photos/terefdaslarimiz.jpeg"),
+              child: Image.asset("assets/images/partnershipp.png"),
             ),
-           SizedBox(
+            SizedBox(
               height: 300,
               child: GridView.builder(
-gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
                 itemCount: 4,
                 itemBuilder: (context, index) => Container(
                   decoration: BoxDecoration(
@@ -50,7 +50,7 @@ gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        "assets/photos/kapital.jpeg",
+                        "assets/images/terefdash.png",
                         height: 80,
                         width: 80,
                       ),

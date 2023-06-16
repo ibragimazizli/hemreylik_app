@@ -1,11 +1,12 @@
 // ignore_for_file: unnecessary_const
 
 import 'package:flutter/material.dart';
-import 'package:hermeyliyin_sesi/screens/test_rec.dart';
-import 'package:hermeyliyin_sesi/widgets/usage_widgets.dart';
+import 'package:hemreyliyin_sesi/widgets/usage_widgets.dart';
 
 class UsageScreen extends StatelessWidget {
-  const UsageScreen({super.key});
+  final Function(int) onTabChanged;
+
+  const UsageScreen({super.key, required this.onTabChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -114,10 +115,8 @@ class UsageScreen extends StatelessWidget {
                 ),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const TestRecordPage()));
+                    onTabChanged(2);
+                    // here goes record page
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -160,7 +159,7 @@ class UsageScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                height: 15,
+                height: 20,
               ),
             ],
           ),

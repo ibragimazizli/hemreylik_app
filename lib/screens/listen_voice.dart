@@ -3,7 +3,7 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
 
 import 'package:flutter/material.dart';
-import 'package:hermeyliyin_sesi/screens/project_end_page.dart';
+import 'package:hemreyliyin_sesi/screens/project_end_page.dart';
 
 class ListenVoice extends StatefulWidget {
   ListenVoice({super.key, required this.path, required this.time});
@@ -136,19 +136,20 @@ class _ListenVoiceState extends State<ListenVoice> {
                 Column(
                   children: [
                     AudioFileWaveforms(
-                      size: Size(MediaQuery.of(context).size.width, 100.0),
+                      size: Size(MediaQuery.of(context).size.width, 70.0),
                       playerController: controller,
                       enableSeekGesture: true,
                       waveformType: WaveformType.long,
                       waveformData: const [],
                       playerWaveStyle: const PlayerWaveStyle(
+                        waveThickness: 3,
                         showTop: true,
                         showBottom: true,
                         showSeekLine: true,
                         seekLineColor: Colors.red,
                         fixedWaveColor: Colors.redAccent,
                         liveWaveColor: Colors.red,
-                        spacing: 8,
+                        spacing: 4,
                       ),
                     ),
                     // SizedBox(
@@ -156,7 +157,7 @@ class _ListenVoiceState extends State<ListenVoice> {
                     //   child: Image.asset("assets/images/Group 27.png"),
                     // ),
                     const SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -330,7 +331,7 @@ class _ListenVoiceState extends State<ListenVoice> {
 
   void _listenAudio() async {
     if (!controller.playerState.isPlaying) {
-      await controller.startPlayer(finishMode: FinishMode.loop);
+      await controller.startPlayer(finishMode: FinishMode.pause);
       setState(() {
         isListening = true;
       });

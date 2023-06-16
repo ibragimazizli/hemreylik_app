@@ -1,10 +1,11 @@
-// ignore_for_file: use_build_context_synchronously
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../widgets/bottom_elements.dart';
-import '../widgets/input_box.dart';
+import 'package:hemreyliyin_sesi/screens/info_screen.dart';
+import 'package:hemreyliyin_sesi/screens/main_page.dart';
+import 'package:hemreyliyin_sesi/screens/partnyors.dart';
+import 'package:hemreyliyin_sesi/screens/profile.dart';
+import 'package:hemreyliyin_sesi/screens/test_rec.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,79 +15,114 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late PersistentTabController _controller;
+
   @override
   void initState() {
-    requestMicrophonePermission();
+    // TODO: implement initState
+    _controller = PersistentTabController(initialIndex: 0);
+
     super.initState();
   }
 
-  Future<void> requestMicrophonePermission() async {
-    PermissionStatus status = await Permission.microphone.request();
-    if (status != PermissionStatus.granted) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('Microphone Permission'),
-          content: const Text(
-              'Please grant microphone permission to use the voice recorder.'),
-          actions: <Widget>[
-            ElevatedButton(
-                child: const Text('OK'),
-                onPressed: () async {
-                  await Permission.microphone.request();
-                  await Permission.storage.request();
-                  Navigator.of(context).pop();
-                }),
-          ],
+  List<Widget> _buildScreens() {
+    return [
+      MainPage(
+        onTabChanged: (int index) {
+          setState(() {
+            _controller.index = index;
+          });
+        },
+      ),
+      InfoScreen(
+        onTabChanged: (int index) {
+          setState(() {
+            _controller.index = index;
+          });
+        },
+      ),
+      RecordPage(
+        onTabChanged: (int index) {
+          setState(() {
+            _controller.index = index;
+          });
+        },
+      ),
+      const Partnyors(),
+      const Profile()
+    ];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        activeColorPrimary: Colors.red,
+        icon: Image.asset("assets/icons/Home.png"),
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        activeColorPrimary: Colors.red,
+        icon: Image.asset("assets/icons/info.png"),
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        activeColorPrimary: Colors.red,
+        icon: SizedBox(
+          width: 40,
+          height: 40,
+          child: Image.asset("assets/icons/mic icon.png"),
         ),
-      );
-    }
+        // iconSize: 60,
+
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        activeColorPrimary: Colors.red,
+        icon: Image.asset("assets/icons/partnyor.png"),
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        activeColorPrimary: Colors.red,
+        icon: Image.asset("assets/icons/User.png"),
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 320,
-                height: 320,
-                child: Image.asset(
-                  'assets/images/login_image.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 15.0,
-                      left: 15,
-                      right: 15,
-                    ),
-                    child: Text(
-                      "Telefon nömrəsini daxil edin",
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const InputBox(),
-              const SizedBox(
-                height: 200,
-              ),
-              const BottomElements(),
-            ],
-          ),
-        ),
+    return PersistentTabView(
+      onItemSelected: (int index) {
+        setState(() {
+          _controller.index = index;
+        });
+      },
+      context,
+      controller: _controller,
+      screens: _buildScreens(),
+      items: _navBarsItems(),
+      confineInSafeArea: true,
+      backgroundColor: Colors.white,
+      handleAndroidBackButtonPress: true,
+      resizeToAvoidBottomInset: true,
+      stateManagement: true,
+      hideNavigationBarWhenKeyboardShows: true,
+      decoration: NavBarDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        colorBehindNavBar: Colors.white,
       ),
+      popAllScreensOnTapOfSelectedTab: true,
+      popActionScreens: PopActionScreensType.all,
+      itemAnimationProperties: const ItemAnimationProperties(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease,
+      ),
+      screenTransitionAnimation: const ScreenTransitionAnimation(
+        animateTabTransition: true,
+        curve: Curves.ease,
+        duration: Duration(milliseconds: 200),
+      ),
+      navBarStyle: NavBarStyle.style3,
     );
   }
 }
