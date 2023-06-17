@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "hermeyliyin_sesi" "\0"
+            VALUE "FileDescription", "hemreyliyin_sesi" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "hermeyliyin_sesi" "\0"
+            VALUE "InternalName", "hemreyliyin_sesi" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "hermeyliyin_sesi.exe" "\0"
-            VALUE "ProductName", "hermeyliyin_sesi" "\0"
+            VALUE "OriginalFilename", "hemreyliyin_sesi.exe" "\0"
+            VALUE "ProductName", "hemreyliyin_sesi" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
